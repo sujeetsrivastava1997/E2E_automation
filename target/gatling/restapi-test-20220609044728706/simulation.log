@@ -1,4 +1,0 @@
-RUN	automation.api.tests.Restapi_test	restapi-test	1654750048706	 	3.7.6
-ERROR	publish message: Failed to build request: No baseUrl defined but provided url is relative : /api/v1/form 	1654750049977
-USER	post call to publish message on pub/sub	START	1654750049974
-USER	post call to publish message on pub/sub	END	1654750049980

@@ -4,31 +4,60 @@ import io.gatling.javaapi.core.CoreDsl;
 import io.gatling.javaapi.core.ScenarioBuilder;
 import io.gatling.javaapi.core.Simulation;
 import io.gatling.javaapi.http.HttpProtocolBuilder;
-import utils.HeaderConstants;
+import org.json.simple.parser.ParseException;
+import org.junit.Assert;
+import constants.HeaderAndBqConstant;
+import util.Utility;
 
-import static io.gatling.javaapi.core.CoreDsl.rampUsers;
+import java.io.IOException;
+import java.time.ZonedDateTime;
+import java.util.concurrent.atomic.AtomicLong;
+
+import static io.gatling.javaapi.core.CoreDsl.atOnceUsers;
 import static io.gatling.javaapi.http.HttpDsl.http;
 import static io.gatling.javaapi.http.HttpDsl.status;
 
 public class Restapi_test extends Simulation {
 
-    HttpProtocolBuilder httpProtocolBuilder = http.baseUrl("");
+    AtomicLong beforeInsertionCount;
+    ZonedDateTime beforeModificationTime;
 
-    //Hitting post call to publish message on pub/sub
+    public void before() {
+        try {
+            beforeInsertionCount = Utility.beforeCount(HeaderAndBqConstant.tableName);
+            beforeModificationTime = (Utility.beforeModifiedTime(HeaderAndBqConstant.modificationTableName));
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    HttpProtocolBuilder httpProtocolBuilder = http.baseUrl("");
     ScenarioBuilder scn1 = CoreDsl.scenario("post call to publish message on pub/sub")
             .exec(http("publish message")
                     .post("https://sdm-formservice-dev.api.banting.lblw.cloud/api/v1/form")
                     .header("Content-Type", "application/json")
                     .header("x-apikey", "Jiy473bm8LCfe09wmtBNRlq85y8c7Nf1")
-                    .header("organization", HeaderConstants.Org)
-                    .header("team", HeaderConstants.Team)
-                    .header("version", HeaderConstants.Version)
-                    .header("formName", HeaderConstants.FormName)
-                    .body(CoreDsl.RawFileBody("externalfile/formbody.json"))
+                    .header("organization", HeaderAndBqConstant.Org)
+                    .header("team", HeaderAndBqConstant.Team)
+                    .header("version", HeaderAndBqConstant.Version)
+                    .header("formName", HeaderAndBqConstant.FormName)
+                    .body(CoreDsl.RawFileBody(HeaderAndBqConstant.file))
                     .check(status().is(200)));
 
-    //virtual user setup for load
     {
-        setUp(scn1.injectOpen(rampUsers(1).during(1))).protocols(httpProtocolBuilder);
+        setUp(scn1.injectOpen(atOnceUsers(1)).protocols(httpProtocolBuilder));
     }
+
+    public void after() {
+        try {
+            AtomicLong afterInsertionCount = Utility.afterCount(beforeInsertionCount, HeaderAndBqConstant.tableName);
+            ZonedDateTime afterModificationTime = Utility.afterModifiedTime(beforeModificationTime, HeaderAndBqConstant.modificationTableName);
+            Assert.assertEquals(beforeInsertionCount.get() + 1, afterInsertionCount.get());
+            Assert.assertNotEquals(beforeModificationTime, afterModificationTime);
+            Utility.bqVerification();
+        } catch (InterruptedException | IOException | ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

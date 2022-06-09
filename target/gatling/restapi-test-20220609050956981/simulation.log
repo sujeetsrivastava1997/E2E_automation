@@ -1,4 +1,0 @@
-RUN	automation.api.tests.Restapi_test	restapi-test	1654751396981	 	3.7.6
-USER	post call to publish message on pub/sub	START	1654751398185
-REQUEST		publish message	1654751398202	1654751400121	OK	 
-USER	post call to publish message on pub/sub	END	1654751400133

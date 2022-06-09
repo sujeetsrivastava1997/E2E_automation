@@ -11,4 +11,4 @@ public class Engine {
 
     Gatling.fromMap(props.build());
   }
-}//import io.gatling.http.protocol.HttpProtocolBuilder.toHttpProtocol;
+}
