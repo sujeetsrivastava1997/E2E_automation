@@ -1,0 +1,10 @@
+{
+  "simulation": "automation.api.tests.Restapi_test",
+  "simulationId": "restapi-test",
+  "start": 1654751321319,
+  "description": "",
+  "scenarios": ["post call to publish message on pub/sub"],
+  "assertions": [
+
+  ]
+}

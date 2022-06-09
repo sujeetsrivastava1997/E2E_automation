@@ -1,0 +1,4 @@
+RUN	automation.api.tests.Restapi_test	restapi-test	1654751321319	 	3.7.6
+USER	post call to publish message on pub/sub	START	1654751322583
+REQUEST		publish message	1654751322598	1654751324021	KO	status.find.transform.is(200), but actually found 401
+USER	post call to publish message on pub/sub	END	1654751324031
