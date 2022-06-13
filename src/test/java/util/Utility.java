@@ -17,6 +17,12 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * set the Bigquery Utility :
+ * 1. Fetch the row count from Bigquery Table.
+ * 2. Fetch the modification Time from Bigquery table metadata.
+ * 3. Adding the assertion on each and every attribute of bigquery table and event.
+ */
 public class Utility {
 
     public static Job bqTableQuery(final String query) throws InterruptedException {

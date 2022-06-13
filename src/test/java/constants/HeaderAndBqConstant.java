@@ -1,5 +1,8 @@
 package constants;
 
+/**
+ * Set the all constant & hard-coded values.
+ */
 public class HeaderAndBqConstant {
 
     public static String organization = "omni";
