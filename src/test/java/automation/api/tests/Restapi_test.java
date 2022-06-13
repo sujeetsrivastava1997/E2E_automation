@@ -1,12 +1,13 @@
 package automation.api.tests;
 
+import constants.HeaderAndBqConstant;
 import io.gatling.javaapi.core.CoreDsl;
 import io.gatling.javaapi.core.ScenarioBuilder;
 import io.gatling.javaapi.core.Simulation;
 import io.gatling.javaapi.http.HttpProtocolBuilder;
 import org.json.simple.parser.ParseException;
 import org.junit.Assert;
-import constants.HeaderAndBqConstant;
+import org.junit.Before;
 import util.Utility;
 
 import java.io.IOException;
@@ -21,14 +22,15 @@ public class Restapi_test extends Simulation {
 
     AtomicLong beforeInsertionCount;
     ZonedDateTime beforeModificationTime;
-
     public void before() {
+
         try {
             beforeInsertionCount = Utility.beforeCount(HeaderAndBqConstant.tableName);
             beforeModificationTime = (Utility.beforeModifiedTime(HeaderAndBqConstant.modificationTableName));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        return ;
     }
 
     HttpProtocolBuilder httpProtocolBuilder = http.baseUrl("");
@@ -58,6 +60,12 @@ public class Restapi_test extends Simulation {
         } catch (InterruptedException | IOException | ParseException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Before
+    public void init() {
+
+        System.setProperty("GOOGLE_APPLICATION_CREDENTIALS", "gcloud_credentials.json");
     }
 
 }

@@ -111,9 +111,7 @@ public class Utility {
     }
 
     public static void bqVerification() throws IOException, ParseException, InterruptedException {
-        JSONParser parser = new JSONParser();
-        Object obj = parser.parse(new FileReader(HeaderAndBqConstant.file));
-        JSONObject jsonObject = (JSONObject) obj;
+        JSONObject jsonObject = getJsonObject();
         Job queryJob =
                 Utility.bqTableQuery(HeaderAndBqConstant.queryForFetchingSingleData.replace("tableName", HeaderAndBqConstant.tableName));
         TableResult testEventResult = queryJob.getQueryResults();
@@ -122,7 +120,35 @@ public class Utility {
             Assert.assertEquals(jsonObject.get("password"), row.get("password").getValue());
             Assert.assertEquals(jsonObject.get("registrant.sex"), row.get("registrant_sex").getValue());
             Assert.assertEquals(jsonObject.get("registrant.hcn"), row.get("registrant_hcn").getValue());
+            Assert.assertEquals(jsonObject.get("registrant.firstName"), row.get("registrant_firstName").getValue());
+            Assert.assertEquals(jsonObject.get("registrant.lastName"), row.get("registrant_lastName").getValue());
+            Assert.assertEquals(jsonObject.get("registrant.dob"), row.get("registrant_dob").getValue());
+            Assert.assertEquals(jsonObject.get("registrant.sex"), row.get("registrant_sex").getValue());
+            Assert.assertEquals(jsonObject.get("registrant.vaccinationProvince"), row.get("registrant_vaccinationProvince").getValue());
+            Assert.assertEquals(jsonObject.get("registrant.dobClean"), row.get("registrant_dobClean").getValue());
+            Assert.assertEquals(jsonObject.get("registrant.city"), row.get("registrant_city").getValue());
+            Assert.assertEquals(jsonObject.get("registrant.doseDate"), row.get("registrant_doseDate").getValue());
+            Assert.assertEquals(jsonObject.get("registrant.contactEmail"), row.get("registrant_contactEmail").getValue());
+            Assert.assertEquals(jsonObject.get("registrant.emailClean"), row.get("registrant_emailClean").getValue());
+            Assert.assertEquals(jsonObject.get("agent.relationship"), row.get("agent_relationship").getValue());
+            Assert.assertEquals(jsonObject.get("agent.firstName"), row.get("agent_firstName").getValue());
+            Assert.assertEquals(jsonObject.get("agent.lastName"), row.get("agent_lastName").getValue());
+            Assert.assertEquals(jsonObject.get("agent.phone"), row.get("agent_phone").getValue());
+            Assert.assertEquals(jsonObject.get("location.link"), row.get("location_link").getValue());
+            Assert.assertEquals(jsonObject.get("verifyPhone"), row.get("verifyPhone").getValue());
+            Assert.assertEquals(jsonObject.get("verifyEmail"), row.get("verifyEmail").getValue());
+            Assert.assertEquals(((JSONObject) jsonObject.get("addressDetails")).get("Id"), row.get("addressDetails_Id").getValue());
+            Assert.assertEquals(((JSONObject) jsonObject.get("addressDetails")).get("City"), row.get("addressDetails_City").getValue());
+            Assert.assertEquals(((JSONObject) jsonObject.get("addressDetails")).get("Label"), row.get("addressDetails_Label").getValue());
+            Assert.assertEquals(((JSONObject) jsonObject.get("addressDetails")).get("CountryName"), row.get("addressDetails_CountryName").getValue());
         }
+    }
+
+    private static JSONObject getJsonObject() throws IOException, ParseException {
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(new FileReader(HeaderAndBqConstant.file));
+        JSONObject jsonObject = (JSONObject) obj;
+        return jsonObject;
     }
 
 }
