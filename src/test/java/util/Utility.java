@@ -7,6 +7,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.Assert;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.Instant;
@@ -116,10 +117,10 @@ public class Utility {
                 Utility.bqTableQuery(HeaderAndBqConstant.queryForFetchingSingleData.replace("tableName", HeaderAndBqConstant.tableName));
         TableResult testEventResult = queryJob.getQueryResults();
         for (FieldValueList row : testEventResult.iterateAll()) {
-            Assert.assertEquals(jsonObject.get("iframeId"), row.get("iframeId").getValue());
-            Assert.assertEquals(jsonObject.get("password"), row.get("password").getValue());
-            Assert.assertEquals(jsonObject.get("registrant.sex"), row.get("registrant_sex").getValue());
-            Assert.assertEquals(jsonObject.get("registrant.hcn"), row.get("registrant_hcn").getValue());
+            Assert.assertEquals(jsonObject.get(HeaderAndBqConstant.iframeId), row.get(HeaderAndBqConstant.iframeId).getValue());
+            Assert.assertEquals(jsonObject.get(HeaderAndBqConstant.password), row.get(HeaderAndBqConstant.password).getValue());
+            Assert.assertEquals(jsonObject.get(HeaderAndBqConstant.registrant_sex), row.get(HeaderAndBqConstant.registrant_sex.replace(".","_")).getValue());
+            Assert.assertEquals(jsonObject.get(HeaderAndBqConstant.registrant_hcn), row.get(HeaderAndBqConstant.registrant_hcn.replace(".","_")).getValue());
             Assert.assertEquals(jsonObject.get("registrant.firstName"), row.get("registrant_firstName").getValue());
             Assert.assertEquals(jsonObject.get("registrant.lastName"), row.get("registrant_lastName").getValue());
             Assert.assertEquals(jsonObject.get("registrant.dob"), row.get("registrant_dob").getValue());

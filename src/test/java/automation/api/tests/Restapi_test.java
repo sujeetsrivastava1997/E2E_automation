@@ -34,17 +34,17 @@ public class Restapi_test extends Simulation {
     }
 
     HttpProtocolBuilder httpProtocolBuilder = http.baseUrl("");
-    ScenarioBuilder scn1 = CoreDsl.scenario("post call to publish message on pub/sub")
-            .exec(http("publish message")
-                    .post("https://sdm-formservice-dev.api.banting.lblw.cloud/api/v1/form")
-                    .header("Content-Type", "application/json")
-                    .header("x-apikey", "Jiy473bm8LCfe09wmtBNRlq85y8c7Nf1")
-                    .header("organization", HeaderAndBqConstant.Org)
+    ScenarioBuilder scn1 = CoreDsl.scenario(HeaderAndBqConstant.publishMessage)
+            .exec(http(HeaderAndBqConstant.message)
+                    .post(HeaderAndBqConstant.baseUrl)
+                    .header("Content-Type", HeaderAndBqConstant.contentType)
+                    .header("x-apikey", HeaderAndBqConstant.api_key)
+                    .header("organization", HeaderAndBqConstant.organization)
                     .header("team", HeaderAndBqConstant.Team)
                     .header("version", HeaderAndBqConstant.Version)
                     .header("formName", HeaderAndBqConstant.FormName)
                     .body(CoreDsl.RawFileBody(HeaderAndBqConstant.file))
-                    .check(status().is(200)));
+                    .check(status().is(HeaderAndBqConstant.statusCode)));
 
     {
         setUp(scn1.injectOpen(atOnceUsers(1)).protocols(httpProtocolBuilder));
