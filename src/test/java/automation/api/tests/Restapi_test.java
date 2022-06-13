@@ -30,7 +30,6 @@ public class Restapi_test extends Simulation {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        return ;
     }
 
     HttpProtocolBuilder httpProtocolBuilder = http.baseUrl("");
