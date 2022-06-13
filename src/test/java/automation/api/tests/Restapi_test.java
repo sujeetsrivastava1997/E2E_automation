@@ -18,6 +18,11 @@ import static io.gatling.javaapi.core.CoreDsl.atOnceUsers;
 import static io.gatling.javaapi.http.HttpDsl.http;
 import static io.gatling.javaapi.http.HttpDsl.status;
 
+/**
+ * fetch the value from Bigquery before and after producing the event into pub/sub using Bigquery utility.
+ * send the post request to base url and event publish on pub/sub using gatling.
+ * set the GOOGLE_APPLICATION_CREDENTIALS property.
+ */
 public class Restapi_test extends Simulation {
 
     AtomicLong beforeInsertionCount;
